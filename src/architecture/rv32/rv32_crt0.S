@@ -9,10 +9,15 @@
         .type   _start, function
 _start:
         // Temporary stack(s) for INIT are created and configure by SETUP
+        la      sp, __boot_stack__
 
         // Set all bytes in the BSS section to zero.
-
-        // implement
+        la      a0, __bss_start__
+        la      a1, __bss_end__
+        #bgeu    a0, a1, 2f
+L1:     sd      zero, (a0)
+        addi    a0, a0, 8
+        bltu    a0, a1, L1
 
         // Call _init
 
