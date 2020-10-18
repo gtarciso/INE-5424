@@ -13,7 +13,8 @@ class CPU: protected CPU_Common
     friend class Machine;
 
 private:
-    static const bool smp = Traits<System>::multicore;
+    static const bool smp = Traits<System>::singlecore;
+    //static const bool smp = Traits<System>::multicore;
 
 public:
     // CPU Native Data Types
@@ -69,26 +70,29 @@ public:
 public:
     // Register access
     static Reg32 sp() {
-        //implement
-        return 0;
+        Reg32 value;
+        ASM("mv %0, sp" : "r="(value):);
+        return value;
     }
 
     static void sp(const Reg32 & sp) {
-        //implement
+        ASM("mv sp, %0" : : "r"(sp), "sp");
     }
 
     static Reg32 fr() {
-        //implement
-        return 0;
+        Reg32 value;
+        ASM("mv %0, fp" : "r="(value));
+        return value;
     }
 
     static void fr(const Reg32 & fr) {
-        //implement
+        ASM("mv fp, %0" : : "r"(fr), "fp");
     }
 
     static Log_Addr ip() {
-        //implement
-        return 0;
+        Reg32 value;
+        ASM("mv %0, pc" : "r="(value));
+        return value;
     }
 
     static Reg32 pdp() { return 0; }
@@ -131,7 +135,7 @@ public:
 
     // Power modes
     static void halt() {
-        //implement
+        ASM("wfi");
     }
 
     //implement
