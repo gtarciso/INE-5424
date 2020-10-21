@@ -13,8 +13,7 @@ class CPU: protected CPU_Common
     friend class Machine;
 
 private:
-    static const bool smp = Traits<System>::singlecore;
-    //static const bool smp = Traits<System>::multicore;
+    static const bool smp = Traits<System>::multicore;
 
 public:
     // CPU Native Data Types
@@ -101,14 +100,20 @@ public:
 
     // Atomic operations
 
+    // Test and set????
     using CPU_Common::tsl;
     /*
     template<typename T>
     static T tsl(volatile T & lock) {
-        //implement
+        register T old;
+        register T one = 1;
+
+
+        return old;
     }
     */
-
+    
+   // Atomic increment
     using CPU_Common::finc;
     /*
     template<typename T>
@@ -117,6 +122,7 @@ public:
     }
     */
 
+   // Atomic decrement
     using CPU_Common::fdec;
     /*
     template<typename T>
@@ -125,6 +131,7 @@ public:
     }
     */
 
+   // Compare and swap
     using CPU_Common::cas;
     /*
     template <typename T>

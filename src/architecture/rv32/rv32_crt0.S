@@ -12,8 +12,8 @@ _start:
         la      sp, __boot_stack__
 
         // Set all bytes in the BSS section to zero.
-        la      a0, __bss_start__
-        la      a1, __bss_end__
+        la      a0, __bss_start
+        la      a1, __BSS_END__
         #bgeu    a0, a1, 2f
 L1:     sd      zero, (a0)
         addi    a0, a0, 8

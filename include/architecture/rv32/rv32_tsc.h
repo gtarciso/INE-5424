@@ -25,7 +25,8 @@ private:
     static const unsigned int ACCURACY = XXXXXX; // ppb
 
     enum {
-        REG_BASE = XXXXXX
+        //REG_BASE = 0x80000c00
+        TSC_BASE = 0x80000c00 // conferir esta merda
     };
 
     //offsets
