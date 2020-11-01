@@ -35,8 +35,23 @@ public:
     static PPB accuracy() { return ACCURACY; }
 
     static Time_Stamp time_stamp() { 
-        // IMPLEMENT
-        return CPU::Reg64(0);
+
+	unsigned int stamp;
+	asm (
+           "rdtime %0;":"=r"(stamp) 
+	   );
+	
+//	if(sizeof(Time_Stamp) == sizeof(CPU::Reg32)) {
+//		return stamp;
+//	}
+//	
+//	unsigned int stampH;
+//	asm (
+//           "rdtimeh %0;":"=r"(stampH)
+//	   );
+
+	//return (stampH << 32) | stamp;
+	return stamp;
     }
 
 private:

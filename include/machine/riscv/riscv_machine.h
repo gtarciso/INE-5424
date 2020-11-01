@@ -33,6 +33,8 @@ public:
 
     static void reboot()
     {
+        TSC::Time_Stamp end = TSC::time_stamp();
+        db<Machine>(WRN) << "STAMP reboot at: " << end << endl;
         if (Traits<System>::reboot) {
             db<Machine>(WRN) << "Machine::reboot()" << endl;
             CPU::halt();

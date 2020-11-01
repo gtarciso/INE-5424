@@ -27,8 +27,8 @@ public:
     };
 
     enum {
-        INT_SYS_TIMER   = 0, // IMPLEMENT: FIX this value
-        INT_USER_TIMER0 = 0, // IMPLEMENT: FIX this value
+        INT_SYS_TIMER   = 5, // IMPLEMENT: FIX this value
+        INT_USER_TIMER0 = 7, // IMPLEMENT: FIX this value
         INT_USER_TIMER1 = 0,
         INT_USER_TIMER2 = 0,
         INT_USER_TIMER3 = 0,
