@@ -53,13 +53,24 @@ _reset:                                                                         
         csrw    mtvec, t2                                                       \t\n\
                                                                                 \t\n\
         # Setting Machine's interrupt-enable bits (`mie` register):             \t\n\
-        # IMPLEMENT : configure MIE                                             \t\n\
+        li      t3, (1 << 3) | (1 << 7) | (1 << 11)                             \t\n\
+        csrw mie, t3                                                            \t\n\
+        la ra, wait                                                             \t\n\
                                                                                 \t\n\
         mret                                                                    \t\n\
                                                                                 \t\n\
 secondary:                                                                      \t\n\
-        # IMPLEMENT : prepare to be awaken                                      \t\n\
+	li t0, 1                                                          \t\n\
+        lb t1, 0(t0)                                                            \t\n\
+        addi t1, t1, 1                                                           \t\n\
+        sb t1, 0(t0)                                                            \t\n\
                                                                                 \t\n\
+        li t0, 1<<3                                                             \t\n\
+        csrw mstatus, t0                                                        \t\n\
+        li t1, 1<<3                                                             \t\n\
+        csrw mie, t1                                                            \t\n\
+        la t2, _start                                                           \t\n\
+        csrw mtvec, t2                                                          \t\n\
 wait:                                                                           \t\n\
         wfi                                                                     \t\n\
         j _start                                                                \t\n\
