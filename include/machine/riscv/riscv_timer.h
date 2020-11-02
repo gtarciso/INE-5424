@@ -85,7 +85,10 @@ public:
     void handler(const Handler & handler) { _handler = handler; }
 
     static void config(const Hertz & frequency) {
-        // IMPLEMENT: set timer to next interrupt
+        volatile unsigned int* mtime = reinterpret_cast<unsigned int*>(0x0200bff8);
+        volatile unsigned int* mtimecmp = reinterpret_cast<unsigned int*>(0x02004000);
+        
+        *mtimecmp = *mtime + frequency;
     }
 
     static Hertz clock() {
