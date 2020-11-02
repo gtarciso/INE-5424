@@ -9,7 +9,9 @@ void add_timer(int n) {
 	volatile unsigned int *mtimecmp = reinterpret_cast<unsigned int*>(0x02004000);
 	volatile unsigned int *mtime = reinterpret_cast<unsigned int*>(0x0200bff8);
 
-	*mtimecmp = *mtime + (n * 10000000);
+	cout << "MTIMECMP: " << *mtimecmp << " MTIME: " << *mtime << endl;
+
+	*mtimecmp = *mtime + (n * 100);
 }
 
 int main()

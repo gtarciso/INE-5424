@@ -85,6 +85,7 @@ void IC::fiq(Interrupt_Id i)
 void IC::exception_handling()
 {
     db<IC>(ERR) << "Exception abort" << endl;
+    db<IC>(TRC) << "EXCEPTION HANDLING!" << endl;
     // IMPLEMENT
     Machine::panic();
 }
