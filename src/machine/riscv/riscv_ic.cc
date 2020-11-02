@@ -87,6 +87,33 @@ void IC::exception_handling()
     db<IC>(ERR) << "Exception abort" << endl;
     db<IC>(TRC) << "EXCEPTION HANDLING!" << endl;
     // IMPLEMENT
+    //unsigned int epc;
+    //unsigned int tval;
+    unsigned int cause;
+    //unsigned int hart;
+    //unsigned int status;
+    //void* trap_frame; // TODO type trap_frame no relatório, não usamos ainda, rever
+    volatile unsigned int* mtime = reinterpret_cast<unsigned int*>(0x0200bff8);
+    volatile unsigned int* mtimecmp = reinterpret_cast<unsigned int*>(0x02004000);
+
+    asm (
+	    "csrr %0, mcause;":"=r"(cause)
+	);
+
+    bool interrupt = (cause >> 31) & 1;
+    if ((void*)interrupt){}; // pro compilador parar de reclamar de unsused variable
+
+    unsigned int cause_num = cause & 0x3ff;
+    switch (cause_num){
+        case 7:
+            db<IC>(TRC) << "IC: Timer Interruption" << endl;
+	    *mtimecmp = *mtime + 10000;
+	    return;
+
+	default:
+            db<IC>(TRC) << "IC: Unhandled case" << endl;
+	    break;
+    }
     Machine::panic();
 }
 __END_SYS
