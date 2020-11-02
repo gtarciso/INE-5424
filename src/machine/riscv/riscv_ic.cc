@@ -150,35 +150,36 @@ void IC::fiq(Interrupt_Id i)
 void IC::exception_handling()
 {
     db<IC>(ERR) << "Exception abort" << endl;
-    db<IC>(TRC) << "EXCEPTION HANDLING!" << endl;
-    // IMPLEMENT
     //unsigned int epc;
     //unsigned int tval;
     unsigned int cause;
     //unsigned int hart;
     //unsigned int status;
-    //void* trap_frame; // TODO type trap_frame no relatório, não usamos ainda, rever
-    volatile unsigned int* mtime = reinterpret_cast<unsigned int*>(0x0200bff8);
-    volatile unsigned int* mtimecmp = reinterpret_cast<unsigned int*>(0x02004000);
 
     asm (
 	    "csrr %0, mcause;":"=r"(cause)
 	);
 
-    bool interrupt = (cause >> 31) & 1;
-    if ((void*)interrupt){}; // pro compilador parar de reclamar de unsused variable
+    bool interrupt = (cause >> 31) & 1; // TODO add mask
+    if (interrupt){
+        unsigned int cause_num = cause & 0x3ff;
+        switch (cause_num){
+            case 3:  // Software interrupt
+                break;
+            
+            case 7:  // Timer interrupt 
+                db<IC>(TRC) << "IC: Timer Interruption" << endl;
+                _int_vector[IC::INT_SYS_TIMER](0);
+            return;
 
-    unsigned int cause_num = cause & 0x3ff;
-    switch (cause_num){
-        case 7:
-            db<IC>(TRC) << "IC: Timer Interruption" << endl;
-	    *mtimecmp = *mtime + 10000;
-	    return;
+            case 11: // External interrupt
+                break;
 
-	default:
-            db<IC>(TRC) << "IC: Unhandled case" << endl;
-	    break;
+        default:
+                db<IC>(TRC) << "IC: Unhandled case" << endl;
+            break;
+        }
     }
-    Machine::panic();
+    Machine::panic(); // Exceptions and non-implemented interrupt come here
 }
 __END_SYS
