@@ -227,8 +227,8 @@ namespace Scheduling_Criteria
         static const bool preemptive = true;
 
     public:
-        EDF(int p = APERIODIC): RT_Common(p) {}
-        EDF(const Microsecond & d, const Microsecond & p = SAME, const Microsecond & c = UNKNOWN, int cpu = ANY);
+        SRTF(int p = APERIODIC): RT_Common(p) {}
+        SRTF(const Microsecond & d, const Microsecond & p = SAME, const Microsecond & c = UNKNOWN, int cpu = ANY);
 
         void update();
     };

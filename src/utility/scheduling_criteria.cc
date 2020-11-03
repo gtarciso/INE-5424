@@ -23,9 +23,11 @@ namespace Scheduling_Criteria {
             _priority = Alarm::elapsed() + _deadline;
     }
 
+    SRTF::SRTF(const Microsecond & d, const Microsecond & p, const Microsecond & c, int): RT_Common(Alarm::ticks(d), Alarm::ticks(d), p, c) {}
+    
     void SRTF::update() {
         if((_priority > PERIODIC) && (_priority < APERIODIC))
-            _priority = Alarm::ticks() - Alarm::elapsed();
+            _priority -= Alarm::elapsed();
     }
 };
 
