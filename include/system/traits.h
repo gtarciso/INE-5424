@@ -31,6 +31,7 @@ namespace Scheduling_Criteria
     class RM;
     class DM;
     class EDF;
+    class SRTF;
     class GRR;
     class CPU_Affinity;
     class GEDF;
