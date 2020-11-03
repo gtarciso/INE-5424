@@ -22,6 +22,11 @@ namespace Scheduling_Criteria {
         if((_priority > PERIODIC) && (_priority < APERIODIC))
             _priority = Alarm::elapsed() + _deadline;
     }
+
+    void SRTF::update() {
+        if((_priority > PERIODIC) && (_priority < APERIODIC))
+            _priority = Alarm::ticks() - Alarm::elapsed();
+    }
 };
 
 __END_UTIL
