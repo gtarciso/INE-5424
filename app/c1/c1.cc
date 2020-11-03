@@ -17,21 +17,21 @@ void add_timer(int n) {
 
 void func1()
 {
-    for(int i = 0; i < 100; i++) 
+    for(int i = 0; i < 40; i++) 
         cout << '1';
     
 }
 
 void func2()
 {
-    for(int i = 0; i < 100; i++) 
+    for(int i = 0; i < 40; i++) 
         cout << '2';
     
 }
 
 void func3()
 {  
-    for(int i = 0; i < 100; i++) 
+    for(int i = 0; i < 40; i++) 
         cout << '3';
     
 }
