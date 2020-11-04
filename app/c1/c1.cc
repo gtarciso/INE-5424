@@ -58,6 +58,8 @@ int main()
     Alarm alarm_2(2000000, &h2, 20);
     Alarm alarm_3(3000000, &h3, 20);
 
+    Alarm::delay(2000000 * 23);
+
     cout << endl;
 
     cout << "----------------------------------" << endl;
