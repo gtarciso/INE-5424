@@ -218,21 +218,6 @@ namespace Scheduling_Criteria
         void update();
     };
 
-    // Shortest Remaining Time First
-    class SRTF: public RT_Common
-    {
-    public:
-        static const bool timed = true;
-        static const bool dynamic = true;
-        static const bool preemptive = true;
-
-    public:
-        SRTF(int p = APERIODIC): RT_Common(p) {}
-        SRTF(const Microsecond & d, const Microsecond & p = SAME, const Microsecond & c = UNKNOWN, int cpu = ANY);
-
-        void update();
-    };
-
     // Global Earliest Deadline First (multicore)
     class GEDF: public EDF
     {

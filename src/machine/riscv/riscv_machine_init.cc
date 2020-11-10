@@ -12,8 +12,6 @@ void Machine::pre_init(System_Info * si)
     db<Init>(WRN) << "Machine::pre_init()" << endl;
 
     db<Init, Machine>(TRC) << "Machine::pre_init()" << endl;
-    TSC::Time_Stamp end = TSC::time_stamp();
-    db<Init, Machine>(TRC) << "TIMESTAMP: " << end << endl;
 
     if(CPU::id() == 0) {
         if(Traits<IC>::enabled) {
@@ -31,7 +29,6 @@ void Machine::init()
 {
     db<Init, Machine>(TRC) << "Machine::init()" << endl;
 
-    // IMPLEMENT to uncomment
     if(Traits<Timer>::enabled)
         Timer::init();
 }

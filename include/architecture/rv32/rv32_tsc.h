@@ -20,7 +20,8 @@ private:
 
     // Registers offsets from CLINT_BASE
     enum {               // Description
-        // IMPLEMENT
+        MTIME  = 0xbff8, // Counter (lower 32 bits)
+        MTIMEH = 0xbffc  // Counter (upper 32 bits)
     };
 
 public:
@@ -34,25 +35,7 @@ public:
     static Hertz frequency() { return CLOCK; }
     static PPB accuracy() { return ACCURACY; }
 
-    static Time_Stamp time_stamp() { 
-
-	unsigned int stamp;
-	asm (
-           "rdtime %0;":"=r"(stamp) 
-	   );
-	
-//	if(sizeof(Time_Stamp) == sizeof(CPU::Reg32)) {
-//		return stamp;
-//	}
-//	
-//	unsigned int stampH;
-//	asm (
-//           "rdtimeh %0;":"=r"(stampH)
-//	   );
-
-	//return (stampH << 32) | stamp;
-	return stamp;
-    }
+    static Time_Stamp time_stamp() { return (CPU::Reg64(reg(MTIMEH)) << 32) | reg(MTIME); }
 
 private:
     static void init() {}
