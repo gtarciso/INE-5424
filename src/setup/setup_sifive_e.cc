@@ -101,30 +101,30 @@ _reset:                                                                         
                                                                                 \t\n\
 secondary:                                                                      \t\n\
         # IMPLEMENT : prepare to be awaken                                      \t\n\
-		la sp, __boot_stack__													\t\n\
-		li t0, 0x1																\t\n\
-		slli t0, t0, 15															\t\n\
-		csrr    a0, mhartid                                                     \t\n\
+        la sp, __boot_stack__                                                   \t\n\
+        li t0, 0x1                                                              \t\n\
+        slli t0, t0, 15                                                         \t\n\
+        csrr    a0, mhartid                                                     \t\n\
         mul     t0, t0, a0                                                      \t\n\
         sub     sp, sp, t0                                                      \t\n\
                                                                                 \t\n\
         li      t0, (0b11 << 11) | (1 << 7) | (1 << 3)                          \t\n\
         csrw    mstatus, t0                                                     \t\n\
-        																		\t\n\
+                                                                                \t\n\
         li      t3, (1 << 3) | (1 << 7) | (1 << 11)                             \t\n\
         csrw    mie, t3                                                         \t\n\
-        																		\t\n\
-        # seta o endereço de mret para wait										\t\n\
-        la t1, wait																\t\n\
-        csrw mepc, t1															\t\n\
-        																		\t\n\
-        # carrega o endereço da vector table									\t\n\
-        la t2, vec 																\t\n\
-        ori t2, t2, 0x1															\t\n\
-        csrw mtvec, t2															\t\n\
-        																		\t\n\
-        # retorna para wait														\t\n\
-        mret																	\t\n\
+                                                                                \t\n\
+        # seta o endereço de mret para wait                                     \t\n\
+        la t1, wait                                                             \t\n\
+        csrw mepc, t1                                                           \t\n\
+                                                                                \t\n\
+        # carrega o endereço da vector table                                    \t\n\
+        la t2, vec                                                              \t\n\
+        ori t2, t2, 0x1                                                         \t\n\
+        csrw mtvec, t2                                                          \t\n\
+                                                                                \t\n\
+        # retorna para wait                                                     \t\n\
+        mret                                                                    \t\n\
                                                                                 \t\n\
 wait:                                                                           \t\n\
         wfi                                                                     \t\n\
