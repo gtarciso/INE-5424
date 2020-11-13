@@ -2,34 +2,7 @@ Machine::pre_init()
 Machine::pre_init()
 Machine::pre_init()
 Machine::pre_init()
-----------------------------------
-       TESTES CRITÉRIO 1 - INÍCIO 
-----------------------------------
-Hello world!
-MTIMECMP: 32027 MTIME: 171379
-Goodbye world!
-----------------------------------
-       TESTES CRITÉRIO 1 - INÍCIO 
-----------------------------------
-Hello world!
-MTIMECMP: 172568 MTIME: 198265
-Goodbye world!
+PPANIC!
 PANIC!
-
-----------------------------------
-       TESTES CRITÉRIO 1 - FIM    
-----------------------------------
-     -   TESTES CRITÉRIO 1 - INÍCIO TESTES CRITÉRIO 1 - INÍ
------CIO -----------------------------
-----------------------------------
-Hello world!
-MTIMECMP: 198813 MTIME: 313010
-Goodbye world!
-PANIC!
-----------------------------------
-
-Hello world!
-MTIMECMP: PANIC!
-313508 MTIME: 324882
-Goodbye world!
+ANIC!
 PANIC!
