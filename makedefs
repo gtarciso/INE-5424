@@ -90,7 +90,7 @@ UUID                    = $(shell cat /proc/sys/kernel/random/uuid | sed 's/-//g
 ia32_COMP_PREFIX	:= /usr/bin/x86_64-linux-gnu-
 armv7_COMP_PREFIX	:= /usr/bin/arm-none-eabi-
 armv8_COMP_PREFIX	:= /usr/bin/arm-none-eabi-
-rv32_COMP_PREFIX	:= /usr/bin/riscv32-linux-gnu-
+rv32_COMP_PREFIX	:= /opt/riscv/bin/riscv32-unknown-linux-gnu-
 COMP_PREFIX		= $($(ARCH)_COMP_PREFIX)
 
 # Machine specifics
@@ -294,7 +294,7 @@ TCPDUMP		:= tcpdump -tttttennvvvXXr
 
 TEE		:= tee
 
-TERM		:= xterm -e
+TERM		:= gnome-terminal --
 
 TOUCH		:= touch
 

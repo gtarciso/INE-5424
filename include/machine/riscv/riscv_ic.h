@@ -131,11 +131,18 @@ public:
     static void ipi(unsigned int cpu, Interrupt_Id i) {
         db<IC>(TRC) << "IC::ipi(cpu=" << cpu << ",int=" << i << ")" << endl;
         assert(i < INTS);
-        // IMPLEMENT
+
+        volatile unsigned int *msip = reinterpret_cast<unsigned int*>(Memory_Map::CLINT_BASE | cpu << 2);
+
+        *msip = *msip | 1 << i;
     }
 
     static void ipi_eoi(Interrupt_Id i) {
-        // IMPLEMENT
+        volatile unsigned int *msip = reinterpret_cast<unsigned int*>(Memory_Map::CLINT_BASE | CPU::id() << 2);
+
+        *msip = 0;
+
+        ASM("    csrw   mcause, zero \n");
     }
 
 

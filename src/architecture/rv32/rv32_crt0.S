@@ -11,7 +11,8 @@ _start:
         // Temporary stack(s) for INIT are created and configure by SETUP
 
         // Only hart (core) 0 cleans cache
-        // IMPLEMENT
+        csrr a0, mhartid
+        bnez a0, 2f
 
         // Set all bytes in the BSS section to zero.
         la      a0, __bss_start
