@@ -23,6 +23,7 @@ void Thread::init()
         // before Init_Application to construct MAIN's global objects.
         new (SYSTEM) Thread(Thread::Configuration(Thread::RUNNING, Thread::MAIN), reinterpret_cast<int (*)()>(__epos_app_entry));
     }
+    CPU::smp_barrier();
     // Idle thread creation does not cause rescheduling (see Thread::constructor_epilogue)
     new (SYSTEM) Thread(Thread::Configuration(Thread::READY, Thread::IDLE), &Thread::idle);
     
@@ -34,7 +35,7 @@ void Thread::init()
     // Letting reschedule() happen during thread creation is also harmless, since MAIN is
     // created first and dispatch won't replace it nor by itself neither by IDLE (which
     // has a lower priority)
-    if(Criterion::timed)
+    if(Criterion::timed && CPU::id() == 0)
         _timer = new (SYSTEM) Scheduler_Timer(QUANTUM, time_slicer);
 
     CPU::smp_barrier();
