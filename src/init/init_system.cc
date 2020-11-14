@@ -17,7 +17,7 @@ public:
     Init_System() {
         db<Init>(TRC) << "Init_System()" << endl;
 	
-	CPU::smp_barrier();
+	    CPU::smp_barrier();
 
         if(CPU::id() != 0){
             CPU::smp_barrier();

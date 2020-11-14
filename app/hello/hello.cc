@@ -1,53 +1,53 @@
 #include <utility/ostream.h>
-#include <time.h>
-#include <architecture/cpu.h>
+#include <process.h>
 
 using namespace EPOS;
 
+
 OStream cout;
+char buffer[2];
+int j;
 
-
-void add_timer(int n) {
-	volatile unsigned int *mtimecmp = reinterpret_cast<unsigned int*>(0x2004000);
-	volatile unsigned int *mtime = reinterpret_cast<unsigned int*>(0x200bff8);
-
-	cout << "MTIMECMP: " << *mtimecmp << " MTIME: " << *mtime << endl;
-
-	*mtimecmp = *mtime + (n*100);
-}
-
-void func1()
+int func(int n)
 {
-    for(int i = 0; i < 39; i++) 
-        cout << '1';
-    cout << CPU::id() << endl;
-}
-
-void func2()
-{
-    for(int i = 0; i < 39; i++) 
-        cout << '2';
-    cout << CPU::id() << endl;
-}
-
-void func3()
-{  
-    for(int i = 0; i < 39; i++) 
-        cout << '3';
-    cout << CPU::id() << endl;
+    for(int i = 0; i < 5000; i++){
+        cout << n << " cpu id:" << CPU::id() << endl;
+        Thread::yield();
+    }
+    return 0;
 }
 
 int main()
 {
     cout << "----------------------------------" << endl;
-    cout << "       TESTES CRITÉRIO 1 - INÍCIO " << endl;
+    cout << "       TESTES CRITÉRIO 3 - INÍCIO " << endl;
     cout << "----------------------------------" << endl;
 
-    cout << "Hello world!" << endl;
-    
+
+    cout << "Context Switch" << endl;
+    Thread * a_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
+    cout << "Computando coisas em:" << a_thread << endl;
+    Thread * b_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(50000000)), &func, 5);
+    cout << "Computando coisas em:" << b_thread << endl;
+    Thread * c_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(30000000)), &func, 3);
+    cout << "Computando coisas em:" << c_thread << endl;
+
+    a_thread->join();
+    cout << "Joining thread:" << a_thread <<endl;
+    b_thread->join();
+    cout << "Joining thread:" << b_thread <<endl;
+    c_thread->join();
+    cout << "Joining thread:" << c_thread <<endl;
+
+    cout << "The end!" << endl;
+
+    delete a_thread;
+    delete b_thread;
+    delete c_thread;
 
     cout << "----------------------------------" << endl;
-    cout << "       TESTES CRITÉRIO 1 - FIM    " << endl;
+    cout << "       TESTES CRITÉRIO 3 - FIM    " << endl;
     cout << "----------------------------------" << endl;
+
     return 0;
 }

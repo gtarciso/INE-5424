@@ -193,7 +193,7 @@ public:
     //      register T one = -1;
     //      ASM(" amoadd.w %0, %1, (%2)   \n" : "=r"(old): "r"(one), "r"(&value) : "t0", "cc", "memory");
     //      return old + 1;
-  //   }
+    // }
 
         // using CPU_Common::finc;
     
@@ -202,8 +202,8 @@ public:
         register T old;
         ASM("1: lr.w    %0, (%1)        \n"
             "   addi    %0, %0, 1       \n"
-            "   sc.w    t3, %0, (%1)    \n"
-            "   bnez    t3, 1b          \n" : "=&r"(old) : "r"(&value) : "t0", "cc", "memory");
+            "   sc.w    t0, %0, (%1)    \n"
+            "   bnez    t0, 1b          \n" : "=&r"(old) : "r"(&value) : "t0", "cc", "memory");
         return old - 1;
     }
 
@@ -214,8 +214,8 @@ public:
         register T old;
         ASM("1: lr.w    %0, (%1)        \n"
             "   addi    %0, %0, -1      \n"
-            "   sc.w    t3, %0, (%1)    \n"
-            "   bnez    t3, 1b          \n" : "=&r"(old) : "r"(&value) : "t0", "cc", "memory");
+            "   sc.w    t0, %0, (%1)    \n"
+            "   bnez    t0, 1b          \n" : "=&r"(old) : "r"(&value) : "t0", "cc", "memory");
         return old + 1;
     }
 
