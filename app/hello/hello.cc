@@ -6,7 +6,6 @@ using namespace EPOS;
 
 OStream cout;
 char buffer[2];
-int j;
 
 int func(int n)
 {
