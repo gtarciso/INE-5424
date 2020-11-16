@@ -26,6 +26,9 @@ public:
         db<Init, Thread>(INF) << "Dispatching the first thread: " << first << endl;
 
         CPU::smp_barrier();
+
+        Timer::config(Traits<Timer>::FREQUENCY);
+
         CPU::int_enable();
         first->_context->load();
     }
