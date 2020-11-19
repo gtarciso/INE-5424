@@ -234,7 +234,7 @@ public:
     static T cas(volatile T & value, T compare, T replacement) {
         register T old;
         ASM("1: lr.w    %0, (%1)        \n"
-            "   bne     %0, %2, f2      \n"
+            "   bne     %0, %2, 2f      \n"
             "   sc.w    t0, %3, (%1)    \n"
             "   bnez    t0, 1b          \n"
             "2:                         \n" : "=&r"(old) : "r"(value), "r"(compare), "r"(replacement) : "t0", "cc", "memory");

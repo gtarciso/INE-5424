@@ -154,7 +154,7 @@ private:
     Time_Stamp _stop;
 };
 
-class Chronometer: public IF<Traits<TSC>::enabled, TSC_Chronometer, Alarm_Chronometer>::Result {};
+class Chronometer: public IF<Traits<TSC>::enabled && !Traits<System>::multicore, TSC_Chronometer, Alarm_Chronometer>::Result {};
 
 __END_SYS
 

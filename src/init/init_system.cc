@@ -16,10 +16,12 @@ private:
 public:
     Init_System() {
         db<Init>(TRC) << "Init_System()" << endl;
-	
-	    CPU::smp_barrier();
 
-        if(CPU::id() != 0){
+        CPU::smp_barrier();
+
+        // Only the boot CPU runs INIT_SYSTEM fully
+        if(CPU::id() != 0) {
+            // Wait until the boot CPU has initialized the machine
             CPU::smp_barrier();
             CPU::init();
             Timer::init();
@@ -48,7 +50,7 @@ public:
         Machine::init();
         db<Init>(INF) << "done!" << endl;
 
-        CPU::smp_barrier();
+        CPU::smp_barrier(); // signalizes "machine ready" to other CPUs
 
         // Initialize system abstractions
         db<Init>(INF) << "Initializing system abstractions: " << endl;
