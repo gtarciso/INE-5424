@@ -27,7 +27,7 @@ public:
 
         CPU::smp_barrier();
 
-        Timer::config(Traits<Timer>::FREQUENCY);
+        // Timer::config(Traits<Timer>::FREQUENCY);
 
         CPU::int_enable();
         first->_context->load();

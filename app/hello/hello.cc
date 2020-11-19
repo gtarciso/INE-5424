@@ -9,8 +9,8 @@ char buffer[2];
 
 int func(int n)
 {
-    for(int i = 0; i < 5000; i++){
-        cout << n << " cpu id:" << CPU::id() << endl;
+    for(int i = 0; i < 5; i++){
+        cout << n << endl;
         Thread::yield();
     }
     return 0;
