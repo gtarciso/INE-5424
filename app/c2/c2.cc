@@ -15,9 +15,8 @@ int count;
 
 int func(int n)
 {
-    for(int i = 0; i < 5000; i++){
-        control.lock();
-        cout << "computando no hart: " << CPU::id() << endl;
+    for(int i = 0; i < 50000; i++){
+        control.lock(); // utiliza as operacoes atomicas da cpu para dar lock
         count += n;
         control.unlock();
     }
@@ -34,14 +33,8 @@ int main()
 
     cout << "Somatorio multicore" << endl;
     Thread * a_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
-    cout << "Computando coisas em:" << a_thread << endl;
     Thread * b_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(50000000)), &func, 5);
-    cout << "Computando coisas em:" << b_thread << endl;
     Thread * c_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(30000000)), &func, 3);
-    cout << "Computando coisas em:" << c_thread << endl;
-
-    cout << "verificando se a contagem foi correta" << endl;
-    assert(count == TOTAL);
 
     a_thread->join();
     cout << "Joining thread:" << a_thread <<endl;
@@ -49,6 +42,10 @@ int main()
     cout << "Joining thread:" << b_thread <<endl;
     c_thread->join();
     cout << "Joining thread:" << c_thread <<endl;
+
+    cout << "verificando se a contagem foi correta" << endl;
+    assert(count == TOTAL);
+    cout << count << " == " << TOTAL << endl;
 
     cout << "The end!" << endl;
 

@@ -179,46 +179,21 @@ public:
 
     // using CPU_Common::cas; // IMPLEMENT
 
-    //  template<typename T>
-    //  static T finc(volatile T & value) {
-    //      register T old;
-    //      register T one = 1;
-    //      ASM(" amoadd.w %0, %1, (%2)   \n" : "=r"(old): "r"(one), "r"(&value) : "t0", "cc", "memory");
-    //      return old - 1;
-    //  }
-
-    //  template<typename T>
-    //  static T fdec(volatile T & value) {
-    //      register T old;
-    //      register T one = -1;
-    //      ASM(" amoadd.w %0, %1, (%2)   \n" : "=r"(old): "r"(one), "r"(&value) : "t0", "cc", "memory");
-    //      return old + 1;
-    // }
-
-        // using CPU_Common::finc;
-    
     template<typename T>
     static T finc(volatile T & value) {
         register T old;
-        ASM("1: lr.w    %0, (%1)        \n"
-            "   addi    %0, %0, 1       \n"
-            "   sc.w    t0, %0, (%1)    \n"
-            "   bnez    t0, 1b          \n" : "=&r"(old) : "r"(&value) : "t0", "cc", "memory");
-        return old - 1;
+        register T one = 1;
+        ASM(" amoadd.w %0, %1, (%2)   \n" : "=r"(old): "r"(one), "r"(&value) : "t0", "cc", "memory");
+        return old;
     }
 
-    // using CPU_Common::fdec;
-    
     template<typename T>
     static T fdec(volatile T & value) {
         register T old;
-        ASM("1: lr.w    %0, (%1)        \n"
-            "   addi    %0, %0, -1      \n"
-            "   sc.w    t0, %0, (%1)    \n"
-            "   bnez    t0, 1b          \n" : "=&r"(old) : "r"(&value) : "t0", "cc", "memory");
-        return old + 1;
+        register T one = -1;
+        ASM(" amoadd.w %0, %1, (%2)   \n" : "=r"(old): "r"(one), "r"(&value) : "t0", "cc", "memory");
+        return old;
     }
-
 
     template<typename T>
     static T tsl(volatile T & lock) {

@@ -44,7 +44,7 @@ int func(int n)
             CPU::smp_barrier();
             return 0;
         }
-        j = j*j;
+        j = j*j; // uma operacao para consumir clocks
         Thread::yield();
     }
     return 0;
