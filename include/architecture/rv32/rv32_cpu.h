@@ -226,7 +226,7 @@ public:
         register T one = 1;
         ASM("1: lr.w %0, (%1)       \n"
             "   sc.w t0, %2, (%1)   \n"
-            "   bnez t0, 1b         \n" : "=&r"(old) : "r"(lock), "r"(one) : "t0", "cc", "memory");
+            "   bnez t0, 1b         \n" : "=&r"(old) : "r"(&lock), "r"(one) : "t0", "cc", "memory");
         return old;
     }
 
@@ -237,7 +237,7 @@ public:
             "   bne     %0, %2, 2f      \n"
             "   sc.w    t0, %3, (%1)    \n"
             "   bnez    t0, 1b          \n"
-            "2:                         \n" : "=&r"(old) : "r"(value), "r"(compare), "r"(replacement) : "t0", "cc", "memory");
+            "2:                         \n" : "=&r"(old) : "r"(&value), "r"(compare), "r"(replacement) : "t0", "cc", "memory");
         return old;
     }
 
