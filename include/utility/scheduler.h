@@ -218,6 +218,36 @@ namespace Scheduling_Criteria
         void update();
     };
 
+    // Shortest Remaining Time First
+    class SRTF: public RT_Common
+    {
+    public:
+        static const bool timed = true;
+        static const bool dynamic = true;
+        static const bool preemptive = true;
+
+    public:
+        SRTF(int p = APERIODIC): RT_Common(p) {}
+        SRTF(const Microsecond & d, const Microsecond & p = SAME, const Microsecond & c = UNKNOWN, int cpu = ANY);
+
+        void update();
+    };
+
+    // Shortest Remainig Time First (multicore)
+    class GSRTF: public SRTF
+    {
+    public:
+        static const unsigned int HEADS = Traits<Machine>::CPUS;
+
+    public:
+        GSRTF(int p = APERIODIC): SRTF(p) {}
+        GSRTF(const Microsecond & d, const Microsecond & p = SAME, const Microsecond & c = UNKNOWN, int cpu = ANY)
+        : SRTF(d, p, c, cpu) {}
+
+        static unsigned int queue() { return current_head(); }
+        static unsigned int current_head() { return CPU::id(); }
+    };
+
     // Global Earliest Deadline First (multicore)
     class GEDF: public EDF
     {
@@ -289,6 +319,10 @@ public Scheduling_Multilist<T> {};
 template<typename T>
 class Scheduling_Queue<T, Scheduling_Criteria::PRM>:
 public Scheduling_Multilist<T> {};
+
+template<typename T>
+class Scheduling_Queue<T, Scheduling_Criteria::GSRTF>:
+public Multihead_Scheduling_List<T> {};
 
 template<typename T>
 class Scheduling_Queue<T, Scheduling_Criteria::GEDF>:
