@@ -62,6 +62,7 @@ int main()
 
     cout << "As próximas threads irão rodar um loop e será printado o ID dos harts" << endl;
     cout << "Assim é possível notar que todos os harts estão computando algo" << endl;
+    cout << "Como todos IDs foram printados duas vezes, é possivel ver que a barreira esta funcionando" << endl;
 
     Thread * a_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
     Thread * b_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(50000000)), &func, 5);
@@ -74,21 +75,13 @@ int main()
 
     cout << endl;
     a_thread->join();
-    cout << "Joining thread:" << a_thread <<endl;
     b_thread->join();
-    cout << "Joining thread:" << b_thread <<endl;
     c_thread->join();
-    cout << "Joining thread:" << c_thread <<endl;
     d_thread->join();
-    cout << "Joining thread:" << d_thread <<endl;
     e_thread->join();
-    cout << "Joining thread:" << e_thread <<endl;
     f_thread->join();
-    cout << "Joining thread:" << f_thread <<endl;
     g_thread->join();
-    cout << "Joining thread:" << g_thread <<endl;
     h_thread->join();
-    cout << "Joining thread:" << h_thread <<endl;
 
     cout << "The end!" << endl;
 

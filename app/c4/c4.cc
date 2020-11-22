@@ -10,7 +10,7 @@ char buffer[2];
 int func(int n)
 {
     for(int i = 0; i < 5; i++){
-        cout << n << endl;
+        cout << n;
         Thread::yield();
     }
     return 0;
@@ -23,7 +23,7 @@ int main()
     cout << "----------------------------------" << endl;
 
 
-    cout << "Creating Threads" << endl;
+    cout << "Creating Threads" << endl; //Threads vao printar suas prioridades que deveriam estar (aprox.) em ordem
     Thread * a_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
     Thread * b_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
     Thread * c_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
@@ -39,7 +39,6 @@ int main()
     Thread * k_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(30000000)), &func, 3);
     Thread * l_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(30000000)), &func, 3);
     
-    cout << "Joining threads" << a_thread <<endl;
     a_thread->join();    
     b_thread->join();
     c_thread->join();
@@ -55,7 +54,7 @@ int main()
     k_thread->join();
     l_thread->join();
 
-    cout << "The end!" << endl;
+    cout << endl << "The end!" << endl;
 
     delete a_thread;
     delete b_thread;

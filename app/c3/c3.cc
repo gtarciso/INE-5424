@@ -1,40 +1,19 @@
 #include <utility/ostream.h>
 #include <process.h>
-#include <time.h>
+#include <system/memory_map.h>
+#include <machine/ic.h>
 
 using namespace EPOS;
 
 OStream cout;
 
-
-
-void func1(int n)
+int func(int n)
 {
-    for(int i = 0; i < 40; i++) 
-        cout << n << CPU::id();
-    
-}
-
-void func2()
-{
-    for(int i = 0; i < 40; i++) 
-        cout << CPU::id();
-    
-}
-
-void func3()
-{  
-    for(int i = 0; i < 40; i++) 
-        cout << '3'<< CPU::id();
-    
-}
-
-void func(){
-
-    Function_Handler h1(&func2);
-
-    Alarm alarm_1(1000000, &h1, 20);
-
+    int count = 0;
+    for(int i = 0; i < 50000; i++){
+        count += n;
+    }
+    return 0;
 }
 
 int main()
@@ -43,23 +22,55 @@ int main()
     cout << "       TESTES CRITÉRIO 3 - INÍCIO " << endl;
     cout << "----------------------------------" << endl;
 
+    volatile unsigned int *mtimecmp0 = reinterpret_cast<unsigned int*>(0x2004000); //endereco d mtimecmp
+    volatile unsigned int *mtimecmp1 = reinterpret_cast<unsigned int*>(0x2004000 | 1 << 3);
+    volatile unsigned int *mtimecmp2 = reinterpret_cast<unsigned int*>(0x2004000 | 2 << 3);
+    volatile unsigned int *mtimecmp3 = reinterpret_cast<unsigned int*>(0x2004000 | 3 << 3);
 
-    Thread * a_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func);
-    Thread * b_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(50000000)), &func);
-    Thread * c_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(30000000)), &func);
-
-    Alarm::delay(2000000 * 23);
+    cout << "mtimecmp hart 0: " << *mtimecmp0 << endl;
+    cout << "mtimecmp hart 1: " << *mtimecmp1 << endl;
+    cout << "mtimecmp hart 2: " << *mtimecmp2 << endl;
+    cout << "mtimecmp hart 3: " << *mtimecmp3 << endl;
+    
+    Thread * a_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
+    Thread * b_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(50000000)), &func, 5);
+    Thread * c_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(30000000)), &func, 3);
+    Thread * d_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(20000000)), &func, 2);
+    Thread * e_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
+    Thread * f_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(50000000)), &func, 5);
+    Thread * g_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(30000000)), &func, 3);
+    Thread * h_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(20000000)), &func, 2);
 
     a_thread->join();
-    cout << "Joining thread:" << a_thread <<endl;
     b_thread->join();
-    cout << "Joining thread:" << b_thread <<endl;
     c_thread->join();
-    cout << "Joining thread:" << c_thread <<endl;
+    d_thread->join();
+    e_thread->join();
+    f_thread->join();
+    g_thread->join();
+    h_thread->join();
+
+    
+    cout << "mtimecmp devem ser maiores depois de computarem coisas: " << endl;
+
+    mtimecmp0 = reinterpret_cast<unsigned int*>(0x2004000); //endereco d mtimecmp
+    mtimecmp1 = reinterpret_cast<unsigned int*>(0x2004000 | 1 << 3);//deslocamento de 8 pois é 64 bits
+    mtimecmp2 = reinterpret_cast<unsigned int*>(0x2004000 | 2 << 3);
+    mtimecmp3 = reinterpret_cast<unsigned int*>(0x2004000 | 3 << 3);
+    
+    cout << "mtimecmp hart 0: " << *mtimecmp0 << endl;
+    cout << "mtimecmp hart 1: " << *mtimecmp1 << endl;
+    cout << "mtimecmp hart 2: " << *mtimecmp2 << endl;
+    cout << "mtimecmp hart 3: " << *mtimecmp3 << endl;
 
     delete a_thread;
     delete b_thread;
     delete c_thread;
+    delete d_thread;
+    delete e_thread;
+    delete f_thread;
+    delete g_thread;
+    delete h_thread;
 
     cout << endl;
 

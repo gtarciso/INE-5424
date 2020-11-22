@@ -15,7 +15,7 @@ int count;
 
 int func(int n)
 {
-    for(int i = 0; i < 50000; i++){
+    for(int i = 0; i < 5000; i++){
         control.lock(); // utiliza as operacoes atomicas da cpu para dar lock
         count += n;
         control.unlock();
