@@ -39,6 +39,7 @@ namespace Scheduling_Criteria
     class PEDF;
     class CEDF;
     class PRM;
+    class PSRTF;
 };
 
 __END_UTIL

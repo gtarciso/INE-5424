@@ -31,13 +31,14 @@ void Thread::constructor_prologue(unsigned int stack_size)
 
 void Thread::constructor_epilogue(const Log_Addr & entry, unsigned int stack_size)
 {
-    db<Thread>(TRC) << "Thread(entry=" << entry
-                    << ",state=" << _state
-                    << ",priority=" << _link.rank()
-                    << ",stack={b=" << reinterpret_cast<void *>(_stack)
-                    << ",s=" << stack_size
-                    << "},context={b=" << _context
-                    << "," << *_context << "}) => " << this << "@" << _link.rank().queue() << endl;
+    //<< "Thread(entry=" << entry
+                    // << ",state=" << _state
+                    // << ",priority=" << _link.rank()
+                    // << ",stack={b=" << reinterpret_cast<void *>(_stack)
+                    // << ",s=" << stack_size
+                    // << "},context={b=" << _context
+                    // << "," << *_context << "}) => " 
+    db<Thread>(TRC) << this << "@" << _link.rank().queue() << endl;
 
     assert((_state != WAITING) && (_state != FINISHING)); // Invalid states
 
@@ -230,7 +231,7 @@ void Thread::yield()
 {
     lock();
 
-    db<Thread>(TRC) << "Thread::yield(running=" << running() << ")" << endl;
+    //db<Thread>(TRC) << "Thread::yield(running=" << running() << ")" << endl;
 
     Thread * prev = running();
     Thread * next = _scheduler.choose_another();
@@ -385,9 +386,9 @@ void Thread::dispatch(Thread * prev, Thread * next, bool charge)
             prev->_state = READY;
         next->_state = RUNNING;
 
-        db<Thread>(TRC) << "Thread::dispatch(prev=" << prev << ",next=" << next << ")" << endl;
-        db<Thread>(INF) << "prev={" << prev << ",ctx=" << *prev->_context << "}" << endl;
-        db<Thread>(INF) << "next={" << next << ",ctx=" << *next->_context << "}" << endl;
+        // db<Thread>(TRC) << "Thread::dispatch(prev=" << prev << ",next=" << next << ")" << endl;
+        // db<Thread>(INF) << "prev={" << prev << ",ctx=" << *prev->_context << "}" << endl;
+        // db<Thread>(INF) << "next={" << next << ",ctx=" << *next->_context << "}" << endl;
 
         if(smp)
             _lock.release();

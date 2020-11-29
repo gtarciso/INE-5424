@@ -301,6 +301,24 @@ namespace Scheduling_Criteria
         static unsigned int current_queue() { return CPU::id() / HEADS; }
         static unsigned int current_head() { return CPU::id() % HEADS; }
     };
+
+    // Partitioned Earliest Deadline First (multicore)
+    class PSRTF: public SRTF, public Variable_Queue
+    {
+    public:
+        static const unsigned int QUEUES = Traits<Machine>::CPUS;
+
+    public:
+        PSRTF(int p = APERIODIC)
+        : SRTF(p), Variable_Queue(((_priority == IDLE) || (_priority == MAIN)) ? CPU::id() : 0) {}
+
+        PSRTF(const Microsecond & d, const Microsecond & p = SAME, const Microsecond & c = UNKNOWN, int cpu = ANY)
+        : SRTF(d, p, c, cpu), Variable_Queue((cpu != ANY) ? cpu : ++_next_queue %= CPU::cores()) {}
+
+        using Variable_Queue::queue;
+
+        static unsigned int current_queue() { return CPU::id(); }
+    };
 }
 
 
@@ -335,6 +353,10 @@ public Scheduling_Multilist<T> {};
 template<typename T>
 class Scheduling_Queue<T, Scheduling_Criteria::CEDF>:
 public Multihead_Scheduling_Multilist<T> {};
+
+template<typename T>
+class Scheduling_Queue<T, Scheduling_Criteria::PSRTF>:
+public Scheduling_Multilist<T> {};
 
 
 // Scheduler

@@ -9,9 +9,14 @@ OStream cout;
 
 int func(int n)
 {
-    int count = 0;
-    for(int i = 0; i < 50000; i++){
-        count += n;
+    int id = CPU::id();
+    cout << "CPU rodando: " << id << endl;
+    for(int i = 0; i < 5000000; i++){
+        int j = i+i;
+        if (id != CPU::id()){
+            cout << "deu ruim :c";
+        }
+        Thread::yield();
     }
     return 0;
 }
@@ -27,10 +32,10 @@ int main()
     volatile unsigned int *mtimecmp2 = reinterpret_cast<unsigned int*>(0x2004000 | 2 << 3);
     volatile unsigned int *mtimecmp3 = reinterpret_cast<unsigned int*>(0x2004000 | 3 << 3);
 
-    cout << "mtimecmp hart 0: " << *mtimecmp0 << endl;
-    cout << "mtimecmp hart 1: " << *mtimecmp1 << endl;
-    cout << "mtimecmp hart 2: " << *mtimecmp2 << endl;
-    cout << "mtimecmp hart 3: " << *mtimecmp3 << endl;
+    // cout << "mtimecmp hart 0: " << *mtimecmp0 << endl;
+    // cout << "mtimecmp hart 1: " << *mtimecmp1 << endl;
+    // cout << "mtimecmp hart 2: " << *mtimecmp2 << endl;
+    // cout << "mtimecmp hart 3: " << *mtimecmp3 << endl;
     
     Thread * a_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(10000000)), &func, 1);
     Thread * b_thread = new Thread(Thread::Configuration(Thread::READY, Thread::Criterion(50000000)), &func, 5);
@@ -50,18 +55,19 @@ int main()
     g_thread->join();
     h_thread->join();
 
+    // cout << a_thread->_link.rank().queue() << endl;
     
-    cout << "mtimecmp devem ser maiores depois de computarem coisas: " << endl;
+    // cout << "mtimecmp devem ser maiores depois de computarem coisas: " << endl;
 
-    mtimecmp0 = reinterpret_cast<unsigned int*>(0x2004000); //endereco d mtimecmp
-    mtimecmp1 = reinterpret_cast<unsigned int*>(0x2004000 | 1 << 3);//deslocamento de 8 pois é 64 bits
-    mtimecmp2 = reinterpret_cast<unsigned int*>(0x2004000 | 2 << 3);
-    mtimecmp3 = reinterpret_cast<unsigned int*>(0x2004000 | 3 << 3);
+    // mtimecmp0 = reinterpret_cast<unsigned int*>(0x2004000); //endereco d mtimecmp
+    // mtimecmp1 = reinterpret_cast<unsigned int*>(0x2004000 | 1 << 3);//deslocamento de 8 pois é 64 bits
+    // mtimecmp2 = reinterpret_cast<unsigned int*>(0x2004000 | 2 << 3);
+    // mtimecmp3 = reinterpret_cast<unsigned int*>(0x2004000 | 3 << 3);
     
-    cout << "mtimecmp hart 0: " << *mtimecmp0 << endl;
-    cout << "mtimecmp hart 1: " << *mtimecmp1 << endl;
-    cout << "mtimecmp hart 2: " << *mtimecmp2 << endl;
-    cout << "mtimecmp hart 3: " << *mtimecmp3 << endl;
+    // cout << "mtimecmp hart 0: " << *mtimecmp0 << endl;
+    // cout << "mtimecmp hart 1: " << *mtimecmp1 << endl;
+    // cout << "mtimecmp hart 2: " << *mtimecmp2 << endl;
+    // cout << "mtimecmp hart 3: " << *mtimecmp3 << endl;
 
     delete a_thread;
     delete b_thread;
