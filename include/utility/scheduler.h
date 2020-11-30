@@ -302,7 +302,7 @@ namespace Scheduling_Criteria
         static unsigned int current_head() { return CPU::id() % HEADS; }
     };
 
-    // Partitioned Earliest Deadline First (multicore)
+    // Partitioned Shortes Remaining Time First
     class PSRTF: public SRTF, public Variable_Queue
     {
     public:
@@ -310,7 +310,7 @@ namespace Scheduling_Criteria
 
     public:
         PSRTF(int p = APERIODIC)
-        : SRTF(p), Variable_Queue(((_priority == IDLE) || (_priority == MAIN)) ? CPU::id() : 0) {}
+        : SRTF(p), Variable_Queue(((_priority == IDLE) || (_priority == MAIN)) ? CPU::id() : ++_next_queue %= CPU::cores()) {}
 
         PSRTF(const Microsecond & d, const Microsecond & p = SAME, const Microsecond & c = UNKNOWN, int cpu = ANY)
         : SRTF(d, p, c, cpu), Variable_Queue((cpu != ANY) ? cpu : ++_next_queue %= CPU::cores()) {}
