@@ -14,8 +14,9 @@ int func(int n)
     for(int i = 0; i < 1000; i++){
         int j = i+i;
         if (id != CPU::id()){
-            cout << "Error: changed queue"; //caso seja imprimido isso, a thread trocou de cpu
+            cout << "Changed queue"; //caso seja imprimido isso, a thread trocou de cpu
         }
+        id = CPU::id();
     }
     return 0;
 }
